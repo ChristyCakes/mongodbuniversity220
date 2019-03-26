@@ -1,4 +1,4 @@
-const MongoClient = require("mongodb").MongoClient
+const MongoClient = require("mongodb").MongoClient, assert = require('assert')
 const NodeEnvironment = require("jest-environment-node")
 module.exports = class MongoEnvironment extends NodeEnvironment {
   async setup() {
@@ -7,9 +7,18 @@ module.exports = class MongoEnvironment extends NodeEnvironment {
         process.env.MFLIX_DB_URI,
         // TODO: Connection Pooling
         // Set the connection pool size to 50 for the testing environment.
+
+
         // TODO: Timeouts
         // Set the write timeout limit to 2500 milliseconds for the testing environment.
-        { useNewUrlParser: true }
+
+        {
+          useNewUrlParser: true,
+          w: "majority",
+          wtimeout: 2500,
+          poolSize: 50,
+          ssl: true
+        }
       )
       await super.setup()
     }
