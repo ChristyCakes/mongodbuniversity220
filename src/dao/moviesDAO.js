@@ -310,10 +310,10 @@ export default class MoviesDAO {
           }
         }, {
           '$lookup': {
-            'from': 'comments', 
+            'from': 'comments',
             'let': {
               'id': '$_id'
-            }, 
+            },
             'pipeline': [
               {
                 '$match': {
@@ -328,7 +328,7 @@ export default class MoviesDAO {
                   'date': -1
                 }
               }
-            ], 
+            ],
             'as': 'comments'
           }
         }
@@ -341,10 +341,15 @@ export default class MoviesDAO {
       Handle the error that occurs when an invalid ID is passed to this method.
       When this specific error is thrown, the method should return `null`.
       */
-
+      // }
       // TODO Ticket: Error Handling
       // Catch the InvalidId error by string matching, and then handle it.
-      console.error(`Something went wrong in getMovieByID: ${e}`)
+
+      if (e.toString().includes(" Argument passed in must be a single String of 12 bytes or a string of 24 hex characters")) {
+        return null
+      }
+
+      console.error(`Something went wrong in getMovieByID: ${e.toString()}`)
       throw e
     }
   }
